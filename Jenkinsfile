@@ -4,6 +4,10 @@ def jsonParse(def json) {
 }
 pipeline {
     agent any
+    environment {
+        NEXUS_USER_VAR      = credentials('nexus-user')
+        NEXUS_USER_PASS_VAR = credentials('nexus-pass')
+    }
     stages {
         stage("Paso 1: Compilar"){
             steps {
@@ -67,6 +71,42 @@ pipeline {
                         ]
                     ]
                 }
+            }
+        }
+        stage("Paso 5 Download: Nexus"){
+            steps {
+                sh ' curl -X GET -u admin:admin "http://nexus:8081/repository/devops-usach-nexus/com/devopsusach2020/DevOpsUsach2020/0.0.1/DevOpsUsach2020-0.0.1.jar" -O'
+            }
+        }
+        stage("Paso 6 Run: Levantar Springboot APP"){
+            steps {
+                sh 'nohup bash java -jar DevOpsUsach2020-0.0.1.jar & >/dev/null'
+            }
+        }
+        stage("Paso 7 Curl: Dormir(Esperar 20sg) "){
+            steps {
+               sh "sleep 20 && curl -X GET 'http://localhost:8081/rest/mscovid/test?msg=testing'"
+            }
+        }
+        stage(" paso 8 Subir nueva Version"){
+            steps {
+                //archiveArtifacts artifacts:'build/*.jar'
+                nexusPublisher nexusInstanceId: 'nexus',
+                    nexusRepositoryId: 'devops-usach-nexus',
+                    packages: [
+                        [$class: 'MavenPackage',
+                            mavenAssetList: [
+                                [classifier: '',
+                                extension: '.jar',
+                                filePath: 'DevOpsUsach2020-0.0.1.jar']
+                            ],
+                    mavenCoordinate: [
+                        artifactId: 'DevOpsUsach2020',
+                        groupId: 'com.devopsusach2020',
+                        packaging: 'jar',
+                        version: '0.0.2']
+                    ]
+                ]
             }
         }
     }
