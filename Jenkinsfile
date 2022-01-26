@@ -75,12 +75,12 @@ pipeline {
         }
         stage("Paso 5 Download: Nexus"){
             steps {
-                sh ' curl -X GET -u admin:admin "http://nexus:8081/repository/devops-usach-nexus/com/devopsusach2020/DevOpsUsach2020/0.0.1/DevOpsUsach2020-0.0.1.jar" -O'
+                sh ' curl -X GET -u $NEXUS_USER_VAR:$NEXUS_USER_PASS_VAR "http://nexus:8081/repository/devops-usach-nexus/com/devopsusach2020/DevOpsUsach2020/0.0.1/DevOpsUsach2020-0.0.1..jar" -O'
             }
         }
         stage("Paso 6 Run: Levantar Springboot APP"){
             steps {
-                sh 'nohup bash java -jar DevOpsUsach2020-0.0.1.jar & >/dev/null'
+                sh 'nohup bash java -jar DevOpsUsach2020-0.0.1..jar & >/dev/null'
             }
         }
         stage("Paso 7 Curl: Dormir(Esperar 20sg) "){
@@ -98,7 +98,7 @@ pipeline {
                             mavenAssetList: [
                                 [classifier: '',
                                 extension: '.jar',
-                                filePath: 'DevOpsUsach2020-0.0.1.jar']
+                                filePath: 'build/DevOpsUsach2020-0.0.1.jar']
                             ],
                     mavenCoordinate: [
                         artifactId: 'DevOpsUsach2020',
