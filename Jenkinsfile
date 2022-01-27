@@ -5,8 +5,8 @@ def jsonParse(def json) {
 pipeline {
     agent any
     environment {
-        NEXUS_USER_VAR      = credentials('nexus-user')
-        NEXUS_USER_PASS_VAR = credentials('nexus-pass')
+        NEXUS_USER_VAR      = credentials('NEXUS-USER')
+        NEXUS_USER_PASS_VAR = credentials('NEXUS-PASS')
     }
     stages {
         stage("Paso 1: Compilar"){
