@@ -38,7 +38,7 @@
 
 # Using Docker to test this app.
 ⚠️ **Is mandatory to use Powershell in Windows**
-## Docker in Windows
+## Docker in Windows ALGO
 ```bash
 ### Compile Code
 docker run -it --rm -v ${pwd}:/code --workdir /code maven mvn clean compile -e
