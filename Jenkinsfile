@@ -101,7 +101,7 @@ pipeline {
                                 extension: 'jar',
                                 filePath: 'build/DevOpsUsach2020-0.0.1.jar']
                             ],
-                            //cometario Daniel Tapia
+                            //cometario Daniel Tapia 3
                     mavenCoordinate: [
                         artifactId: 'DevOpsUsach2020',
                         groupId: 'com.devopsusach2020',
